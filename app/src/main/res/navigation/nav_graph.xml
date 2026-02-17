@@ -42,8 +42,8 @@
 
     <fragment
         android:id="@+id/newOrEditedRecipeFragment"
-        android:name="com.example.delicious_dishes.view.NewOrEditedRecipeFragment"
-        tools:layout="@layout/new_recipe_fragment" >
+        android:name="com.example.delicious_dishes.view.PrepareLaterFragment"
+        tools:layout="@layout/prepare_later_fragment" >
         <argument
             android:name="currentRecipe"
             app:argType="ru.samirkad.kadrecipe.dto.RecipeDto"

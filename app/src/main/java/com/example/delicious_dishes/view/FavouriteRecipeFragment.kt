@@ -5,66 +5,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import com.example.delicious_dishes.adapter.TopSpacingItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.delicious_dishes.MainActivity
 import com.example.delicious_dishes.adapter.RecipesAdapter
 import com.example.delicious_dishes.databinding.FavouriteFragmentBinding
-import com.example.delicious_dishes.dto.RecipeDto
-import com.example.delicious_dishes.viewModel.RecipeViewModel
+import com.example.delicious_dishes.entity.Recipe
+import com.example.delicious_dishes.util.AnimationHelper
+
 
 class FavouriteRecipeFragment : Fragment() {
-
-    private val favouriteRecipeViewModel: RecipeViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    private lateinit var binding: FavouriteFragmentBinding
+    private lateinit var filmsAdapter: RecipesAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = FavouriteFragmentBinding.inflate(layoutInflater, container, false).also { binding ->
-        val adapter = RecipesAdapter(favouriteRecipeViewModel)
-        binding.recipesRecycler.adapter = adapter
+    ): View? {
+        binding = FavouriteFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        favouriteRecipeViewModel.data.observe(viewLifecycleOwner) { recipes ->
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val favoritesList: List<Recipe> = emptyList()
 
-            val favouriteRecipes = recipes.filter { it.addToFavourites }
-            adapter.submitList(favouriteRecipes)
+        AnimationHelper.performFragmentCircularRevealAnimation(binding.favouriteFragment, requireActivity(),2)
 
-            val emptyList = recipes.none { it.addToFavourites }
-            binding.textEmptyList.visibility =
-                if(emptyList) View.VISIBLE else View.GONE
-            binding.iconEmptyList.visibility =
-                if(emptyList) View.VISIBLE else View.GONE
+        binding.recipesRecycler.apply {
+            filmsAdapter = RecipesAdapter(object : RecipesAdapter.OnItemClickListener {
+                override fun click(recipe: Recipe) {
+                    (requireActivity() as MainActivity).launchDetailsFragment(recipe)
+                }
+            })
+            adapter = filmsAdapter
+            layoutManager = LinearLayoutManager(requireContext())
+            val decorator = TopSpacingItemDecoration(8)
+            addItemDecoration(decorator)
         }
-
-        favouriteRecipeViewModel.separateRecipeViewEvent.observe(viewLifecycleOwner) { recipeCardId ->
-            val direction =
-                FavouriteRecipeFragmentDirections.actionFavouriteRecipeFragmentToSeparateRecipeFragment(
-                    recipeCardId
-                )
-            findNavController().navigate(direction)
-        }
-
-        favouriteRecipeViewModel.navigateRecipe.observe(viewLifecycleOwner) { recipe ->
-            val direction =
-                FavouriteRecipeFragmentDirections.actionFavouriteRecipeFragmentToNewOrEditedRecipeFragment(
-                    recipe
-                )
-            findNavController().navigate(direction)
-        }
-    }.root
-
-    override fun onResume() {
-        super.onResume()
-
-        setFragmentResultListener(
-            requestKey = NewOrEditedRecipeFragment.REQUEST_KEY
-        ) {requestKey, bundle ->
-            if(requestKey != NewOrEditedRecipeFragment.REQUEST_KEY) return@setFragmentResultListener
-            val newRecipe = bundle.getParcelable<RecipeDto>(
-                NewOrEditedRecipeFragment.RESULT_KEY
-            ) ?: return@setFragmentResultListener
-            favouriteRecipeViewModel.onSaveButtonClicked(newRecipe)
-        }
+        filmsAdapter.addItems(favoritesList)
     }
 }

@@ -2,93 +2,58 @@ package com.example.delicious_dishes.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
-import androidx.navigation.fragment.findNavController
-import androidx.fragment.app.viewModels
-import com.example.delicious_dishes.adapter.showCategories
+import androidx.lifecycle.ViewModelProvider
+import com.example.delicious_dishes.R
 import com.example.delicious_dishes.databinding.CategoryFiltersBinding
-import com.example.delicious_dishes.dto.Category
-import com.example.delicious_dishes.viewModel.RecipeViewModel
+import com.example.delicious_dishes.util.AnimationHelper
+import com.example.delicious_dishes.viewmodel.SettingsFragmentViewModel
+import io.reactivex.Observer
 
-class CategoryFilterFragment : Fragment() {
 
-    private val categoryFilterViewModel: RecipeViewModel by viewModels(ownerProducer = ::requireParentFragment)
-
+class CategoryFilterFragment :  Fragment() {
+    private lateinit var binding: CategoryFiltersBinding
+    private val viewModel by lazy {
+        ViewModelProvider.NewInstanceFactory().create(SettingsFragmentViewModel::class.java)
+    }
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = CategoryFiltersBinding.inflate(layoutInflater, container, false).also { binding ->
+    ): View {
+        binding = CategoryFiltersBinding.inflate(layoutInflater, container, false)
+        return binding.root
+    }
 
-        with(binding) {
-            checkBoxEuropean.text = checkBoxEuropean.context.showCategories(Category.European)
-            checkBoxAsian.text = checkBoxAsian.context.showCategories(Category.Asian)
-            checkBoxEastern.text = checkBoxEastern.context.showCategories(Category.Eastern)
-            checkBoxRussian.text = checkBoxRussian.context.showCategories(Category.Russian)
-            checkBoxAmerican.text = checkBoxAmerican.context.showCategories(Category.American)
-
-            binding.ok.setOnClickListener {
-                onOkButtonClicked(binding)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        AnimationHelper.performFragmentCircularRevealAnimation(binding.filtersCategoryRoot, requireActivity(), 4)
+        viewModel.categoryPropertyLifeData.observe(viewLifecycleOwner, Observer<String> {
+            when(it) {
+                CHECK_BOX_EUROPEAN -> binding.radioGroup.check(R.id.сheckBoxEuropean)
+                CHECK_BOX_ASIAN -> binding.radioGroup.check(R.id.checkBoxAsian)
+                CHECK_BOX_EASTERN -> binding.radioGroup.check(R.id.checkBoxEastern)
+                CHECK_BOX_RUSSIAN -> binding.radioGroup.check(R.id.checkBoxRussian)
+                CHECK_BOX_AMERICAN-> binding.radioGroup.check(R.id.checkBoxAmerican)
             }
-        }
-    }.root
-
-    private fun onOkButtonClicked(binding: CategoryFiltersBinding) {
-
-        val categoryList = arrayListOf<Category>()
-        var checkedCount = 5
-        val nothingIsChecked = 0
-
-        if(binding.checkBoxEuropean.isChecked) {
-            categoryList.add(Category.European)
-            categoryFilterViewModel.setCategoryFilter = true
-        } else {
-            --checkedCount
-        }
-
-        if(binding.checkBoxAsian.isChecked) {
-            categoryList.add(Category.Asian)
-            categoryFilterViewModel.setCategoryFilter = true
-        } else {
-            --checkedCount
-        }
-
-        if(binding.checkBoxEastern.isChecked) {
-            categoryList.add(Category.Eastern)
-            categoryFilterViewModel.setCategoryFilter = true
-        } else {
-            --checkedCount
-        }
-
-        if(binding.checkBoxRussian.isChecked) {
-            categoryList.add(Category.Russian)
-            categoryFilterViewModel.setCategoryFilter = true
-        } else {
-            --checkedCount
-        }
-
-        if(binding.checkBoxAmerican.isChecked) {
-            categoryList.add(Category.American)
-            categoryFilterViewModel.setCategoryFilter = true
-        } else {
-            --checkedCount
-        }
-
-        if(checkedCount == nothingIsChecked) {
-            Toast.makeText(activity, "Нельзя убрать все фильтры", Toast.LENGTH_LONG).show()
-        } else {
-            categoryFilterViewModel.showRecipesCategories(categoryList)
-            val resultBundle = Bundle(1)
-            resultBundle.putParcelableArrayList(CHECKBOX_KEY, categoryList)
-            setFragmentResult(CHECKBOX_KEY, resultBundle)
-            findNavController().popBackStack()
+        })
+        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            when(checkedId) {
+                R.id.сheckBoxEuropean -> viewModel.putCategoryProperty(CHECK_BOX_EUROPEAN)
+                R.id.checkBoxAsian -> viewModel.putCategoryProperty(CHECK_BOX_ASIAN)
+                R.id.checkBoxEastern -> viewModel.putCategoryProperty(CHECK_BOX_EASTERN)
+                R.id.checkBoxRussian -> viewModel.putCategoryProperty(CHECK_BOX_RUSSIAN)
+                R.id.checkBoxAmerican -> viewModel.putCategoryProperty(CHECK_BOX_AMERICAN)
+            }
         }
     }
 
     companion object {
-        const val CHECKBOX_KEY = "checkBoxContent"
+        private const val CHECK_BOX_EUROPEAN = "European"
+        private const val CHECK_BOX_ASIAN = "Asian"
+        private const val CHECK_BOX_EASTERN = "Eastern"
+        private const val CHECK_BOX_RUSSIAN = "Russian"
+        private const val CHECK_BOX_AMERICAN = "American"
     }
 }

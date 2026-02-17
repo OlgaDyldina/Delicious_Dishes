@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/feedFragment"
+        android:id="@+id/feed"
         android:enabled="true"
         android:icon="@drawable/ic_add_24"
-        android:title="@string/all_recipes"/>
+        android:title="@string/all_recipes"
+        app:showAsAction="withText" />
 
     <item
-        android:id="@+id/categoryFilterFragment"
+        android:id="@+id/categoryFilter"
         android:enabled="true"
         android:icon="@drawable/ic_filter_alt_24"
-        android:title="@string/filter"/>
+        android:title="@string/filter"
+        app:showAsAction="withText"/>
     <item
-        android:id="@+id/favouriteRecipeFragment"
-        android:enabled="true"
-        android:icon="@drawable/ic_favourites_24"
-        android:title="@string/favourites"/>
+        android:id="@+id/prepare_later"
+        android:icon="@drawable/baseline_watch_later_24"
+        android:title="@string/menu_prepare_later_title"
+        app:showAsAction="withText"/>
+    <item
+        android:id="@+id/favorites"
+        android:icon="@drawable/baseline_favorite_24"
+        android:title="@string/menu_favorites_title"
+        app:showAsAction="withText"/>
+
 </menu>

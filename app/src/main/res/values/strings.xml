@@ -3,16 +3,7 @@
     <string name="deliciousDishes">Вкусные рецепты</string>
     <string name="description_welcome">Твоя личная книга рецептов</string>
     <string name="all_recipes">Все рецепты</string>
-    <string name="filter">Фильтр</string>
-    <string name="favourites">Избранное</string>
-    <string name="title_activity_feed_fragment">FeedFragment</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
+    <string name="filter">Категории</string>
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
@@ -31,7 +22,10 @@
     <string name="russian_type">Русская</string>
     <string name="american_type">Американская</string>
     <string name="recipe_save">Сохранить рецепт</string>
-    <string name="recipeContent">Пельмени – знаменитое блюдо русской кухни, имеющее древние китайские, финно-угорские, тюркские и славянские корни.</string>
-    <string name="text_empty_list">Здесь ничего нет</string>
     <string name="author">Автор</string>
+    <string name="open">В избранное</string>
+    <string name="menu_prepare_later_title">Приготовить позже</string>
+    <string name="menu_favorites_title">Избранное</string>
+    <string name="menu_settings_title">Настройки</string>
+    <string name="radio_group_header">Кухни мира</string>
 </resources>

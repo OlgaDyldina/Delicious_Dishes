@@ -1,96 +1,62 @@
 package com.example.delicious_dishes.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.delicious_dishes.dto.RecipeDto
-import java.util.Locale
+import com.example.delicious_dishes.entity.Recipe
+import com.example.delicious_dishes.viewholder.RecipeViewHolder
+import com.example.delicious_dishes.viewmodel.RecipeViewModel
 
-class RecipesAdapter(
-    private val interactionListener: RecipeInteractionListener
-) : ListAdapter<RecipeDto, RecipesAdapter.ViewHolder>(DiffCallback) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) : ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = RecipeBinding.inflate(inflater, parent, false)
-        return ViewHolder(binding, interactionListener)
+class RecipesAdapter (private val clickListener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val items = mutableListOf<Recipe>()
+
+    override fun getItemCount() = items.size
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return RecipeViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.recipe_item, parent, false)
+        )
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
-
-    }
-
-    class ViewHolder(
-        private val binding: RecipeBinding,
-        listener: RecipeInteractionListener
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-        private lateinit var recipe: RecipeDto
-
-        private val popupMenu by lazy {
-            PopupMenu(itemView.context, binding.options).apply {
-                inflate(R.menu.options)
-                setOnMenuItemClickListener { menuItem ->
-                    when (menuItem.itemId) {
-                        R.id.remove -> {
-                            listener.onRemoveButtonClicked(recipe)
-                            true
-                        }
-                        R.id.edit -> {
-                            listener.onEditButtonClicked(recipe)
-                            true
-                        }
-                        else -> false
-                    }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is RecipeViewHolder -> {
+                holder.bind(items[position])
+                holder.itemView.setOnClickListener {
+                    clickListener.click(items[position])
                 }
             }
         }
+    }
 
-        init {
-            binding.options.setOnClickListener { popupMenu.show() }
-        }
+    fun addItems(list: List<Recipe>) {
+        items.clear()
+        items.addAll(list)
+        notifyDataSetChanged()
+    }
 
-        init {
-            binding.authorName.setOnClickListener { listener.onRecipeCardClicked(recipe) }
-            binding.name.setOnClickListener { listener.onRecipeCardClicked(recipe) }
-            binding.avatar.setOnClickListener { listener.onRecipeCardClicked(recipe) }
-        }
+    interface OnItemClickListener {
+        fun click(recipe: Recipe)
+    }
 
-        init {
-            itemView.setOnClickListener { listener.onRecipeItemClicked(recipe) }
-            binding.favourite.setOnClickListener { listener.onFavouritesButtonClicked(recipe) }
-        }
-
-        fun bind(recipe: RecipeDto) {
-            this.recipe = recipe
-
-            with(binding) {
-                name.text = recipe.name
-                authorName.text = recipe.author
-                category.text = category.context.showCategories(recipe.category)
-                favourite.isChecked = recipe.addToFavourites
+    private fun RecyclerView.initSearchPagination() {
+        addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy > 0) {
+                    val visibleItemCount = recyclerView.layoutManager!!.childCount
+                    val totalItemCount = recyclerView.layoutManager!!.itemCount
+                    val pastVisibleItemCount =
+                        (recyclerView.layoutManager as GridLayoutManager).findFirstVisibleItemPosition()
+                    RecipeViewModel.doSearchPagination(
+                        visibleItemCount,
+                        totalItemCount,
+                        pastVisibleItemCount,
+                        query
+                    )
+                }
             }
-        }
-    }
-
-    private object DiffCallback : DiffUtil.ItemCallback<RecipeDto>() {
-        override fun areItemsTheSame(oldItem: RecipeDto, newItem: RecipeDto) =
-            oldItem.id == newItem.id
-
-        override fun areContentsTheSame(oldItem: RecipeDto, newItem: RecipeDto) =
-            oldItem == newItem
-    }
-}
-
-fun Context.showCategories(category: Locale.Category) : String {
-    return when (category) {
-        Category.European -> getString(R.string.european_type)
-        Category.Asian -> getString(R.string.asian_type)
-        Category.Eastern -> getString(R.string.eastern_type)
-        Category.Russian -> getString(R.string.russian_type)
-        Category.American -> getString(R.string.american_type)
+        })
     }
 }
