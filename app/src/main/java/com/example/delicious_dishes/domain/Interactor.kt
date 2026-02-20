@@ -19,7 +19,7 @@ class Interactor (private val repo: MainRepository, private val retrofitService:
         retrofitService.getRecipe(getDefaultCategoryFromPreferences(), API.KEY, "ru-RU", page)
             .subscribeOn(Schedulers.io())
             .map {
-                Converter.convertApiListToDTOList(it.tmdbFilms)
+                Converter.convertApiListToDTOList(it.tmdbRecipe)
             }
             .subscribeBy(
                 onError = {

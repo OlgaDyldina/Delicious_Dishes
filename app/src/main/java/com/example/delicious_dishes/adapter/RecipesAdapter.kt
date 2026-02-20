@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.delicious_dishes.entity.Recipe
 import com.example.delicious_dishes.viewholder.RecipeViewHolder
 import com.example.delicious_dishes.viewmodel.RecipeViewModel
+import com.example.delicious_dishes.R
 
 
 class RecipesAdapter (private val clickListener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -16,7 +17,7 @@ class RecipesAdapter (private val clickListener: OnItemClickListener) : Recycler
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return RecipeViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.recipe_item, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.recipe, parent, false)
         )
     }
 

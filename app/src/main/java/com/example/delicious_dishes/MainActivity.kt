@@ -92,6 +92,12 @@ class MainActivity : AppCompatActivity() {
                     changeFragment(fragment ?: CategoryFilterFragment(), tag)
                     true
                 }
+                R.id.isWatched -> {
+                    val tag = "isWatched"
+                    val fragment = checkFragmentExistence(tag)
+                    changeFragment(fragment ?: CategoryFilterFragment(), tag)
+                    true
+                }
 
                 else -> false
             }

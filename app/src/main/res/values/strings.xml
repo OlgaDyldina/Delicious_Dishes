@@ -27,5 +27,6 @@
     <string name="menu_prepare_later_title">Приготовить позже</string>
     <string name="menu_favorites_title">Избранное</string>
     <string name="menu_settings_title">Настройки</string>
+    <string name="menu_isWatched_title">Просмотренные рецепты</string>
     <string name="radio_group_header">Кухни мира</string>
 </resources>

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/feed"
         android:enabled="true"
-        android:icon="@drawable/ic_add_24"
+        android:icon="@drawable/baseline_home_24"
         android:title="@string/all_recipes"
         app:showAsAction="withText" />
 
@@ -23,6 +23,11 @@
         android:id="@+id/favorites"
         android:icon="@drawable/baseline_favorite_24"
         android:title="@string/menu_favorites_title"
+        app:showAsAction="withText"/>
+    <item
+        android:id="@+id/isWatched"
+        android:icon="@drawable/outline_eye_tracking_24"
+        android:title="@string/menu_isWatched_title"
         app:showAsAction="withText"/>
 
 </menu>
