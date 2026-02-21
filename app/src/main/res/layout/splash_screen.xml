@@ -10,11 +10,11 @@
 
     <ImageView
         android:id="@+id/welcome"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="375dp"
+        android:layout_height="414dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"
-        android:src="@drawable/main"/>
+        android:src="@drawable/main" />
 
     <TextView
         android:id="@+id/text_1"
@@ -24,21 +24,22 @@
         android:layout_margin="60dp"
         android:textAlignment="center"
         android:text="@string/deliciousDishes"
-        android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textColor="@color/FireBrick"
+        android:textSize="30sp"
         android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/text_2"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/welcome"
-        android:layout_margin="80dp"
-        android:textAlignment="center"
+        android:layout_margin="60dp"
+        android:layout_marginTop="51dp"
+        android:layout_marginBottom="80dp"
         android:text="@string/description_welcome"
+        android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="21sp"
-        android:textStyle="normal"/>
+        android:textStyle="normal" />
 
 </RelativeLayout>

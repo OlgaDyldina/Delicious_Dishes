@@ -2,58 +2,65 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/filters_category_root"
+    android:background="@drawable/side_nav_bar"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <CheckBox
-        android:id="@+id/checkBoxEuropean"
-        android:layout_width="wrap_content"
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:checked="true"
-        android:clickable="true"
-        android:focusable="true"
-        android:text="@string/european_type"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@android:color/black"
+        android:layout_margin="8dp"
+        android:text="@string/radio_group_header"/>
 
-    <CheckBox
-        android:id="@+id/checkBoxAsian"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="@string/asian_type"
-        app:layout_constraintStart_toStartOf="@+id/checkBoxEuropean"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxEuropean"/>
-
-    <CheckBox
-        android:id="@+id/checkBoxEastern"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="@string/eastern_type"
-        app:layout_constraintStart_toStartOf="@+id/checkBoxAsian"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxAsian" />
-
-    <CheckBox
-        android:id="@+id/checkBoxRussian"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="@string/russian_type"
-        app:layout_constraintStart_toStartOf="@+id/checkBoxEastern"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxEastern" />
-
-    <CheckBox
-        android:id="@+id/checkBoxAmerican"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="@string/american_type"
-        app:layout_constraintStart_toStartOf="@+id/checkBoxRussian"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxRussian" />
+        <RadioButton
+            android:id="@+id/сheckBoxEuropean"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@android:color/black"
+            android:text="@string/european_type"/>
+        <RadioButton
+            android:id="@+id/checkBoxAsian"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@android:color/black"
+            android:text="@string/asian_type"/>
+        <RadioButton
+            android:id="@+id/checkBoxEastern"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@android:color/black"
+            android:text="@string/eastern_type"/>
+        <RadioButton
+            android:id="@+id/checkBoxRussian"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@android:color/black"
+            android:text="@string/russian_type"/>
+        <RadioButton
+            android:id="@+id/checkBoxAmerican"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textColor="@android:color/black"
+            android:text="@string/american_type"/>
+    </RadioGroup>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/ok"

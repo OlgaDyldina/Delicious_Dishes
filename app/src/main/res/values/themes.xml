@@ -22,7 +22,7 @@
     </style>
 
     <style name="Widget.AppTheme.Favourite" parent="Widget.MaterialComponents.Button.TextButton.Icon">
-        <item name="icon">@drawable/check_favourites</item>
+        <item name="icon">@drawable/baseline_favorite_24</item>
         <item name="iconTint">@color/favourite_tint</item>
         <item name="android:minWidth">@dimen/icon_button_min_size</item>
         <item name="android:minHeight">@dimen/icon_button_min_size</item>

@@ -5,6 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_favorite"
+    android:visibility="invisible"
+    tools:visibility="visible"
     android:id="@+id/favouriteFragment"
     tools:context=".view.FavouriteRecipeFragment">
 
@@ -17,32 +20,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/recipe"/>
 
-    <ImageView
-        android:id="@+id/iconEmptyList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_mood_bad_24"
-        android:visibility="gone"
-        android:layout_marginBottom="@dimen/common_spacing"
-        app:layout_constraintBottom_toTopOf="@+id/textEmptyList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible"/>
-
-    <TextView
-        android:id="@+id/textEmptyList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_empty_list"
-        android:visibility="gone"
-        android:textColor="?attr/colorSecondaryVariant"
-        android:textSize="27sp"
-        android:paddingStart="@dimen/medium_spacing"
-        android:paddingEnd="@dimen/medium_spacing"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+  </androidx.constraintlayout.widget.ConstraintLayout>
