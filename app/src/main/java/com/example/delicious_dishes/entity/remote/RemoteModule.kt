@@ -1,5 +1,6 @@
 package com.example.delicious_dishes.entity.remote
 
+import com.google.firebase.remoteconfig.BuildConfig
 import dagger.Module
 import dagger.Provides
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory

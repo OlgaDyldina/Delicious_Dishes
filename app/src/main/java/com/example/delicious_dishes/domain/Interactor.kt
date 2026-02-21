@@ -3,14 +3,16 @@ package com.example.delicious_dishes.domain
 import com.example.delicious_dishes.API
 import com.example.delicious_dishes.repository.MainRepository
 import com.example.delicious_dishes.entity.Recipe
+import com.example.delicious_dishes.entity.remote.TmdbApi
 import com.example.delicious_dishes.preference.PreferenceProvider
+import com.example.delicious_dishes.util.Converter
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import retrofit2.Converter
+import io.reactivex.rxjava3.kotlin.subscribeBy
 
 
-class Interactor (private val repo: MainRepository, private val retrofitService: com.example.delicious_dishes.entity.remote.TmdbApi, private val preferences: PreferenceProvider) {
+class Interactor (private val repo: MainRepository, private val retrofitService: TmdbApi, private val preferences: PreferenceProvider) {
     var progressBarState = BehaviorSubject<Boolean> = BehaviorSubject.create()
 
     fun getRecipesFromApi(page: Int) {

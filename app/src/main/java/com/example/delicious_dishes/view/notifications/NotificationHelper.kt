@@ -1,5 +1,6 @@
 package com.example.delicious_dishes.view.notifications
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.DatePickerDialog
 import android.app.PendingIntent
@@ -22,6 +23,7 @@ import com.example.delicious_dishes.entity.Recipe
 import com.example.delicious_dishes.receivers.ReminderBroadcast
 
 object NotificationHelper {
+    @SuppressLint("MissingPermission")
     fun createNotification(context: Context, recipe: Recipe) {
         val mIntent = Intent(context, MainActivity::class.java)
 
@@ -74,7 +76,7 @@ object NotificationHelper {
                         0
                     )
                     val dateTimeInMillis = pickedDateTime.timeInMillis
-                    createWatchLaterEvent(context, dateTimeInMillis, recipe)
+                    createPrepareLaterEvent(context, dateTimeInMillis, recipe)
                 }
                 TimePickerDialog(
                     context,
@@ -89,7 +91,8 @@ object NotificationHelper {
             currentDay
         ).show()
     }
-    private fun createWatchLaterEvent(context: Context, dateTimeInMillis: Long, recipe: Recipe){
+    @SuppressLint("ScheduleExactAlarm")
+    private fun createPrepareLaterEvent(context: Context, dateTimeInMillis: Long, recipe: Recipe){
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val intent = Intent(recipe.query, null, context, ReminderBroadcast()::class.java)
         val bundle = Bundle()

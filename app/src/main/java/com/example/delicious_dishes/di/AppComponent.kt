@@ -3,6 +3,8 @@ package com.example.delicious_dishes.di
 import com.example.delicious_dishes.di.modules.DatabaseModule
 import com.example.delicious_dishes.di.modules.DomainModule
 import com.example.delicious_dishes.entity.remote.RemoteProvider
+import com.example.delicious_dishes.viewmodel.RecipeViewModel
+import com.example.delicious_dishes.viewmodel.SettingsFragmentViewModel
 import dagger.Component
 import javax.inject.Singleton
 
@@ -16,6 +18,6 @@ import javax.inject.Singleton
     ]
 )
 interface AppComponent {
-    fun inject(homeFragmentViewModel: HomeFragmentViewModel)
+    fun inject(homeFragmentViewModel: RecipeViewModel)
     fun inject(settingsFragmentViewModel: SettingsFragmentViewModel)
 }

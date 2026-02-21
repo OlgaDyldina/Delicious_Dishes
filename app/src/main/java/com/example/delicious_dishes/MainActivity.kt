@@ -4,7 +4,23 @@ import android.content.BroadcastReceiver
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.view.Surface
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.fragment.app.Fragment
 import com.example.delicious_dishes.databinding.ActivityMainBinding
 import com.example.delicious_dishes.entity.Recipe
@@ -14,10 +30,15 @@ import com.example.delicious_dishes.view.FavouriteRecipeFragment
 import com.example.delicious_dishes.view.FeedFragment
 import com.example.delicious_dishes.view.PrepareLaterFragment
 import com.example.delicious_dishes.view.SeparateRecipeFragment
+import com.example.delicious_dishes.view.theme.AppTheme
+import com.example.delicious_dishes.view.theme.LocalThemeState
+import com.example.delicious_dishes.view.theme.ThemeState
+import com.example.delicious_dishes.viewmodel.ThemeViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var reciver: BroadcastReceiver
+    private val viewModel: ThemeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +59,55 @@ class MainActivity : AppCompatActivity() {
             addAction(Intent.ACTION_BATTERY_LOW)
         }
         registerReceiver(reciver, filters)
+
+        setContent {
+            val currentThemeState by viewModel.themeState.collectAsState()
+            val darkTheme = when (currentThemeState) {
+                ThemeState.Dark -> true
+                ThemeState.Light -> false
+                ThemeState.System -> LocalConfiguration.current.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK == android.content.res.Configuration.UI_MODE_NIGHT_YES
+            }
+            AppTheme(darkTheme = darkTheme) {
+                CompositionLocalProvider(
+                    LocalThemeState provides Pair(
+                        currentThemeState,
+                        viewModel::toggleTheme
+                    )
+                ) {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = colorScheme.background
+                    ) {
+                        MainScreen(viewModel = viewModel)
+                    }
+                }
+            }
+        }
+    }
+    @Composable
+    fun MainScreen(viewModel: ThemeViewModel) {
+        val currentThemeState by viewModel.themeState.collectAsState()
+
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Текущая тема: ${currentThemeState.name}")
+            Button(onClick = { viewModel.toggleTheme() }) {
+                Text("Переключить тему")
+            }
+        }
+    }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun DefaultPreview() {
+        val dummyViewModel = remember {ThemeViewModel() }
+        AppTheme {
+            CompositionLocalProvider(LocalThemeState provides Pair(ThemeState.Light, dummyViewModel::toggleTheme)) {
+                MainScreen(viewModel = dummyViewModel)
+            }
+        }
     }
 
     override fun onDestroy() {
